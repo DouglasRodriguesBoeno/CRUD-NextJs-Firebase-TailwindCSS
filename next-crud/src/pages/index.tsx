@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from '../components/Layout'
 import Table from '../components/Table'
 import Cliente from '../core/Cliente'
+import Button from '../components/Button'
 
 export default function Home() {
   const clientes = [
@@ -17,7 +18,7 @@ export default function Home() {
   }
 
   function clienteDelete(cliente: Cliente) {
-    console.log(cliente.nome)
+    console.log(`Excluir ${cliente.nome}`)
   }
 
   return (
@@ -28,7 +29,12 @@ export default function Home() {
     `}>
 
       <Layout title="Cadastro Next">
-        <Table clientes={clientes} clienteSelection={clienteSelection}></Table>
+        <div className={`flex justify-end`}>
+          <Button color='green' className='mb-4'>Novo Cliente</Button>
+        </div>
+        <Table clientes={clientes}
+          clienteDelete={clienteDelete}
+          clienteSelection={clienteSelection}></Table>
       </Layout>
     </div>
   )
