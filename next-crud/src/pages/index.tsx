@@ -12,6 +12,13 @@ export default function Home() {
     new Cliente('Joao', 15, '5'),
   ]
 
+  function clienteSelection(cliente: Cliente) {
+    console.log(cliente.nome)
+  }
+
+  function clienteDelete(cliente: Cliente) {
+    console.log(cliente.nome)
+  }
 
   return (
     <div className={`
@@ -21,7 +28,7 @@ export default function Home() {
     `}>
 
       <Layout title="Cadastro Next">
-        <Table clientes={clientes}></Table>
+        <Table clientes={clientes} clienteSelection={clienteSelection}></Table>
       </Layout>
     </div>
   )
