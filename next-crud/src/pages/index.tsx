@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { use, useState } from 'react'
 import Layout from '../components/Layout'
 import Table from '../components/Table'
 import Cliente from '../core/Cliente'
 import Button from '../components/Button'
+import Form from '../components/Form'
 
 export default function Home() {
   const clientes = [
@@ -21,6 +22,12 @@ export default function Home() {
     console.log(`Excluir ${cliente.nome}`)
   }
 
+  function saveClient(cliente: Cliente) {
+    console.log(cliente)
+  }
+
+  const [visible, setVisible] = useState<'tabela' | 'form'>('tabela')
+
   return (
     <div className={`
       flex justify-center items-center h-screen 
@@ -29,12 +36,23 @@ export default function Home() {
     `}>
 
       <Layout title="Cadastro Next">
-        <div className={`flex justify-end`}>
-          <Button color='green' className='mb-4'>Novo Cliente</Button>
-        </div>
-        <Table clientes={clientes}
-          clienteDelete={clienteDelete}
-          clienteSelection={clienteSelection}></Table>
+        {visible === 'tabela' ? (
+          <>
+            <div className={`flex justify-end`}>
+              <Button color='green' className='mb-4'
+                onClick={() => setVisible('form')}>
+                Novo Cliente</Button>
+            </div>
+            <Table clientes={clientes}
+              clienteDelete={clienteDelete}
+              clienteSelection={clienteSelection}></Table>
+          </>
+        ) : <Form
+          cliente={clientes[2]}
+          cancelClient={() => setVisible('tabela')}
+          modifyCliente={saveClient}
+        ></Form>}
+
       </Layout>
     </div>
   )
