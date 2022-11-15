@@ -1,35 +1,42 @@
-import React, { use, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Layout from '../components/Layout'
 import Table from '../components/Table'
 import Cliente from '../core/Cliente'
 import Button from '../components/Button'
 import Form from '../components/Form'
+import ClienteRepositorio from '../core/ClienteRepositorio'
+import ColecaoCliente from '../backend/db/ColecaoCliente'
 
 export default function Home() {
 
+  const repo: ClienteRepositorio = new ColecaoCliente()
+
   const [visible, setVisible] = useState<'tabela' | 'form'>('tabela')
   const [cliente, setCliente] = useState<Cliente>(Cliente.vazio())
+  const [clientes, setClientes] = useState<Cliente[]>([])
 
-  const clientes = [
-    new Cliente('Ana', 45, '1'),
-    new Cliente('Diogo', 98, '2'),
-    new Cliente('Julia', 67, '3'),
-    new Cliente('Anderson', 35, '4'),
-    new Cliente('Joao', 15, '5'),
-  ]
+  useEffect(obterTodos, [])
+
+  function obterTodos() {
+    repo.obterTodos(cliente).then(clientes => {
+      setClientes(clientes)
+      setVisible('tabela')
+    })
+  }
 
   function clienteSelection(cliente: Cliente) {
     setCliente(cliente)
     setVisible('form')
   }
 
-  function clienteDelete(cliente: Cliente) {
-    console.log(`Excluir ${cliente.nome}`)
+  async function clienteDelete(cliente: Cliente) {
+    await repo.excluir(cliente)
+    obterTodos();
   }
 
-  function saveClient(cliente: Cliente) {
-    console.log(cliente)
-    setVisible('tabela')
+  async function saveClient(cliente: Cliente) {
+    await repo.salvar(cliente)
+    obterTodos();
   }
 
   function newCliente() {
