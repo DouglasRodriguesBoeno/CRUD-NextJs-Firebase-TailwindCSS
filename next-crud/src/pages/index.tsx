@@ -6,6 +6,10 @@ import Button from '../components/Button'
 import Form from '../components/Form'
 
 export default function Home() {
+
+  const [visible, setVisible] = useState<'tabela' | 'form'>('tabela')
+  const [cliente, setCliente] = useState<Cliente>(Cliente.vazio())
+
   const clientes = [
     new Cliente('Ana', 45, '1'),
     new Cliente('Diogo', 98, '2'),
@@ -15,7 +19,8 @@ export default function Home() {
   ]
 
   function clienteSelection(cliente: Cliente) {
-    console.log(cliente.nome)
+    setCliente(cliente)
+    setVisible('form')
   }
 
   function clienteDelete(cliente: Cliente) {
@@ -24,9 +29,13 @@ export default function Home() {
 
   function saveClient(cliente: Cliente) {
     console.log(cliente)
+    setVisible('tabela')
   }
 
-  const [visible, setVisible] = useState<'tabela' | 'form'>('tabela')
+  function newCliente() {
+    setCliente(Cliente.vazio())
+    setVisible('form')
+  }
 
   return (
     <div className={`
@@ -39,8 +48,8 @@ export default function Home() {
         {visible === 'tabela' ? (
           <>
             <div className={`flex justify-end`}>
-              <Button color='green' className='mb-4'
-                onClick={() => setVisible('form')}>
+              <Button color='blue' className='mb-4'
+                onClick={() => newCliente()}>
                 Novo Cliente</Button>
             </div>
             <Table clientes={clientes}
@@ -48,7 +57,7 @@ export default function Home() {
               clienteSelection={clienteSelection}></Table>
           </>
         ) : <Form
-          cliente={clientes[2]}
+          cliente={cliente}
           cancelClient={() => setVisible('tabela')}
           modifyCliente={saveClient}
         ></Form>}
