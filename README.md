@@ -1,0 +1,3 @@
+# CRUD-NextJs-Firebase-TailwindCSS
+
+OLÁ ESSE É UM EXEMPLO DE PROJETO REACT/NEXT.JS
